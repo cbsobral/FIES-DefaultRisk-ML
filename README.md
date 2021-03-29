@@ -5,7 +5,7 @@ Our goal is to employ machine learning algorithms to predict loan default probab
 Our final objective is to find out which are the best performing models for this task as well as the predictive power of the features. 
 
 ## Module00
-In this module we prepare the data and run preliminary analysis. 
+In this module we prepare the data and run preliminary analysis of features. 
 
 ## Module01
-In this module we implement the machine learning methods and provide performance measures for the classification task. 
+In this module we implement the machine learning methods and provide performance measures for the classification tasks. 
