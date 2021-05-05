@@ -6,7 +6,16 @@ Our final objective is to find out which are the best performing models for this
 
 
 ## Module00
-In this module we prepare the data and run preliminary analysis of features. 
+In this module we prepare the data and perform an initial analysis of the features. 
 
 ## Module01
-In this module we implement the machine learning methods and provide performance measures for the classification tasks. 
+In this module, we implement the machine learning methods and provide performance measures for the classification tasks. 
+
+## Module02 a-c
+In module 2 a-c, we implement random grid search and sampling strategies to find out which hyperparameters give the best AUC value. 
+
+## Module03
+Here we implement a composite predictor consisting of a combination of the three best performing individual models: ANN, RF and LR. This module also evaluates the significance of the features. 
+
+# Conclusions
+The overall results showed that Artificial Neural Networks performed best in each context. Moreover, up-sampling and down-sampling strategies did not noticeably improve the performance of the models in terms of AUC score. Finally, with respect to feature importance, we found that loan-related characteristics - rather than individual characteristics - are the most important predictors of default.
