@@ -85,18 +85,43 @@ This is a side note.
 
 ## Proposed Method 
 
-This section details your approach(es) to the problem. For example, this is where you describe the architecture of your model, and any other key methods or algorithms.
+### Logistic Regression
 
-- You should be specific when describing your main approaches -- you probably want to include equations and figures.
-- You should also describe your baseline(s). Depending on space constraints, and how standard your baseline is, you might do this in detail, or simply refer the reader to some other paper for the details. 
-- If any part of your approach is original, make it clear (so we can give you credit!). For models and techniques that aren't yours, provide references.
-- If you're using any code that you didn't write yourself, make it clear and provide a reference or link. When describing something you coded yourself, make it clear (so we can give you credit!).
+Logistic Regression (LR) is a binary classifier that estimates the probability of a certain instance belonging to one of two classes. According to o Yeh and hui Lien (2009), a logistic regression model specifies that the probability of an event is a linear function of the observed values of the available predictors. 
 
-**Below is an example of a figure:**
+### Decision Trees
 
-```{r fig1, eval = TRUE, echo = FALSE, out.width = '100%', fig.cap = "Model architecture"}
-knitr::include_graphics("figures/BERTfig3.png")
-```
+Decision Trees apply a decision-tree-like structure in order to partition the data and separate cases of the same class in the same subgroups. For that end, they produce a rooted tree consisting of nodes split upon each variable, resulting in a final tree where branches represent an outcome of the splits. Each final node represents a class that is assigned to the data Stelzer (2019). There are distinct types of classification and decision trees, and for this study, we apply the Classification and Regression Trees (CART) technique. 
+
+### Random Forest
+
+Random Forests are a type of ensemble classifier that combines tree models and the principles of both bagging and boosting Stelzer (2019). They make use of Decision Trees trained on different random subsets of the dataset to introduce further diversity to estimates. After a set number of trees has been trained, the prediction is produced by collecting all the trees’ votes.
+
+### Support Vector Machines
+
+This technique is based on the idea that the space where the labels are located can be divided in two parts. In order to classify each label, a hyperplane is employed to set the limit between two classes. In our case, an hyperplane would separate the space to distinguish a good from a bad borrower. As pointed out by Bishop (2016), there are multiple hyperplanes that might accomplish that task, but we would like to find the one which minimizes the generalization error. The Support Vector Machines (SVM) approach uses the concept of margin to find the best solution. Margin is the distance between the decision boundary and the closest vector locating an instance from our training set. These vectors are known as support vectors. The technique aims at maximizing this margin while avoiding or limiting margin violations Geron (2019). Mathematically, it is possible to express this classification as follows:
+
+ $$ y(x) = w^T \Phi (t) $$
+
+Where $w^T$ is a vector of coefficients that maximizes the margin around the classification limit and minimizes errors.  $\Phi (x)$ comprises the values of each feature that might be transformed in order to classify data that is not linear. This is important because linear SVMs can perform poorly in data that is not linearly separable in space.  Finally, `$b$` represents the bias. After training the model and finding `$w^T$`, it is possible to find the class of a new instance by observing the signal of $y$. 
+
+### Artificial Neural Network
+
+Artificial Neural Networks (ANN) rely on Threshold Logic Units (TLU) or other kinds of artificial neurons to carry out classification. TLU is an artificial neuron that based on a set of features inputs computes a weighted sum which is compared to a threshold. The output depends on whether the weighted sum is lower or higher than the threshold and tells the class of a particular new instance Geron (2019). As it can be seen, ANN shares some similarities with SVM but the latter uses only critical features to establish the threshold, the so called support vectors, while the former uses all the features.
+
+### Baseline Model 
+
+Traditionally, the main literature on credit score prediction employs logistic regression (LR) as a baseline for comparison. Aniceto (2020) study the performance of several methods to predict loan default with a data set provided by a Brazilian bank. They use logistic regression as a baseline and conclude that ensemble methods perform better. In this research, however, the recommendation of Lessman et al. (2015) will be followed. The authors suggest that random forest (RF) should be used as the benchmark when exploring the performance of new models for default prediction. They argue that RF has proved to be superior to LR and therefore outperforming LR models is no longer a major signal of methodological advancement.
+
+### Ensemble Model using Weighted Average (AvgW)
+
+After training and adjusting the individual models aforementioned,  our proposal was to build a classifier whose output is the weighted average of the individual methods. Bishop (2016  highlights that very often a combination of multiple models perform better than a single isolated one. In order to implement our ensemble method, we followed the approach employed by Stelzer (2019). The author uses a weighted average to estimate default probability. Each model is weighted according to its accuracy so that better performing methods have a higher influence over the final prediction.  This method is also found to be one of the top performers among 41 other approaches to predict credit scoring Lessman et al. (2015). 
+
+The final predicted class was given by the following procedure. First, the weighted average probability is calculated for each class according to the expression below:
+
+$$ {Weighted Average Prob}_{c} = \sum_{i=1}^{n} \frac{p_{cj}{w_i}}{n} $$
+
+For each instance, the model computes the weighted average probability p for class c by multiplying the probability of class c given by model i by the weight of model i and dividing the result by the number of models n.  The predicted class is the one with the highest weighted average probability. The weights of each model were defined proportional to the AUC (area under the curve) obtained for the respective model.
 
 ## Experiments 
 
@@ -117,12 +142,12 @@ knitr::include_graphics("figures/BERTfig3.png")
 ***Note***: **Feel free to use some of the code from your project to explain your experiments. See example code block below.**
 
 ```{python bertcnn model parameters, echo = TRUE, eval = FALSE}
-OUTPUT_DIM = len(LABEL.vocab)
-DROPOUT = 0.5
-N_FILTERS = 100
-FILTER_SIZES = [2,3]
+#OUTPUT_DIM = len(LABEL.vocab#)
+#DROPOUT = 0.5
+#N_FILTERS = 100
+#FILTER_SIZES = [2,3]
 
-model = BERTCNN(bert,
+#model = BERTCNN(bert,
                 OUTPUT_DIM,
                 DROPOUT,
                 N_FILTERS,
@@ -131,11 +156,52 @@ model = BERTCNN(bert,
 
 ## Analysis 
 
-Your report should include some qualitative evaluation. That is, try to understand your system (how it works, when it succeeds and when it fails) by measuring or inspecting key characteristics or outputs of your model.
 
-- Types of qualitative evaluation include: commenting on selected examples, error analysis, measuring the performance metric for certain subsets of the data, ablation studies, comparing the behaviors of two systems beyond just the performance metric, and visualizing attention distributions or other activation heatmaps.
+The results after the optimization routines can be summarized in the following table along with two important references. The Logistic Regression results and the Random Forest results. The first one, largely used in the literature as baseline for this type of classification and the second one, used in this work as a good reference, due to it's expected good results.
 
-- The Practical Tips lecture notes has a detailed section on qualitative evaluation -- you may find it useful to reread it.
+```{r,echo = FALSE}
+table_analysis <- data.frame(Methods=c('Random Forest','Logistic Regression'), AUC_Baseline =c(0.7836,0.7232),AUC_AvgW = c(0.8354,0.8354),Improvement = c("6.6%","15.5%"))
+```
+
+```{r, echo = FALSE}
+library(dplyr)
+library(kableExtra)
+
+table_analysis %>%kbl() %>%  kable_styling()
+
+```
+The improvements achieved were remarkable. Although, we probably could get even more improvements if we had used more models in the AvgW routine.
+
+The final importance of that feature is estimated by calculating how much the score of the model decreases when this feature is substituted by noise.Total debt is the most important predictor in our ensemble model. It contains information on the total value of the debt of a certain student. It is related to which course the student chose, since some courses, like Medicine, are more expensive. It is also related to other features that also appear among the most important, like semesters funded, loan value, loan limit and loan value per semester. Our model is, therefore, strongly driven by the amount of money hired by the student.
+
+
+The next figure shows the most important features of our model. The most important features for the prections are listed in the figure XXX . The 10 most important features are mainly related to the loan conditions.
+
+```{r fig2, eval = TRUE, echo = FALSE, out.width = '100%', fig.cap = "Feature Importance"}
+knitr::include_graphics("./figures/FeatureImportance.png")
+```
+
+### Ethical Implications
+
+The use of Machine Learning to predict loan default is one among the many analyses that are now largely employing ML algorithms like credit scoring and crime prediction. Even though,  our analysis is mainly focused on a proposal for a better public policy, we cannot avoid the ethical discussion about the results, considering that according to  \cite{Kusner2017} “decisions in these areas may have ethical or legal implications, so it is necessary for the modeler to think beyond the objective of maximizing prediction accuracy and consider the societal impact of their worl."
+
+That being said, we should highlight that the most important features of our ensemble model are related to the value of the course chosen by the student or to his capacity to pay, as poorer students, for example, would finance a higher proportion of their courses. Because of that, applying our model to define who should get a loan without further thought might exclude subgroups based on loan value. 
+
+###  Robnustness Withouth Fixed Characteristics
+
+In terms of fixed characteristics in the model, that can lead to misinterpretation of the results, due to a possible misinterpretation of the results,  we analyse “gender” and “ethnicity”. For our proposal it is important to keep these features in the model, but we also tested the model  without these characteristics. The  results are also robust without these features as shown in the following table, and still outperform  our baseline model as well as the findings from previous literature.
+
+```{r}
+remove_characteristics <- data.frame(Methods=c('Without Gender','Without Ethnicity','Without Gender and Ethnicity'), AUC =c(0.753,0.751,0.752), Brier_Score = c(0.201,0.202,0.202))
+```
+
+
+```{r}
+
+remove_characteristics %>%kbl() %>%  kable_styling()
+
+```
+
 
 ## Conclusion(s)
 
