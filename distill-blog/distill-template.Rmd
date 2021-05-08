@@ -63,19 +63,19 @@ In the context of student loans, in a working paper, @Jayadev2019 apply machine 
 
 ### Logistic Regression
 
-Logistic Regression (LR) is a binary classifier that estimates the probability of a certain instance belonging to one of two classes. According to o Yeh and Hui Lien (2009), a logistic regression model specifies that the probability of an event is a linear function of the observed values of the available predictors. 
+Logistic Regression (LR) is a binary classifier that estimates the probability of a certain instance belonging to one of two classes. According to @Yeh2009, a logistic regression model specifies that the probability of an event is a linear function of the observed values of the available predictors. 
 
 ### Decision Trees
 
-Decision Trees apply a decision-tree-like structure in order to partition the data and separate cases of the same class in the same subgroups. For that end, they produce a rooted tree consisting of nodes split upon each variable, resulting in a final tree where branches represent an outcome of the splits. Each final node represents a class that is assigned to the data Stelzer (2019). There are distinct types of classification and decision trees, and for this study, we apply the Classification and Regression Trees (CART) technique. 
+Decision Trees apply a decision-tree-like structure in order to partition the data and separate cases of the same class in the same subgroups. For that end, they produce a rooted tree consisting of nodes split upon each variable, resulting in a final tree where branches represent an outcome of the splits. Each final node represents a class that is assigned to the data @Stelzer2019. There are distinct types of classification and decision trees, and for this study, we apply the Classification and Regression Trees (CART) technique. 
 
 ### Random Forest
 
-Random Forests are a type of ensemble classifier that combines tree models and the principles of both bagging and boosting Stelzer (2019). They make use of Decision Trees trained on different random subsets of the dataset to introduce further diversity to estimates. After a set number of trees has been trained, the prediction is produced by collecting all the trees’ votes.
+Random Forests are a type of ensemble classifier that combines tree models and the principles of both bagging and boosting @Stelzer2019. They make use of Decision Trees trained on different random subsets of the dataset to introduce further diversity to estimates. After a set number of trees has been trained, the prediction is produced by collecting all the trees’ votes.
 
 ### Support Vector Machines
 
-This technique is based on the idea that the space where the labels are located can be divided in two parts. In order to classify each label, a hyperplane is employed to set the limit between two classes. In our case, an hyperplane would separate the space to distinguish a good from a bad borrower. As pointed out by Bishop (2016), there are multiple hyperplanes that might accomplish that task, but we would like to find the one which minimizes the generalization error. The Support Vector Machines (SVM) approach uses the concept of margin to find the best solution. Margin is the distance between the decision boundary and the closest vector locating an instance from our training set. These vectors are known as support vectors. The technique aims at maximizing this margin while avoiding or limiting margin violations Geron (2019). Mathematically, it is possible to express this classification as follows:
+This technique is based on the idea that the space where the labels are located can be divided in two parts. In order to classify each label, a hyperplane is employed to set the limit between two classes. In our case, an hyperplane would separate the space to distinguish a good from a bad borrower. As pointed out by @Bishop2006, there are multiple hyperplanes that might accomplish that task, but we would like to find the one which minimizes the generalization error. The Support Vector Machines (SVM) approach uses the concept of margin to find the best solution. Margin is the distance between the decision boundary and the closest vector locating an instance from our training set. These vectors are known as support vectors. The technique aims at maximizing this margin while avoiding or limiting margin violations @Geron2019. Mathematically, it is possible to express this classification as follows:
 
  $$ y(x) = w^T \Phi (t) $$
 
@@ -83,15 +83,15 @@ Where $w^T$ is a vector of coefficients that maximizes the margin around the cla
 
 ### Artificial Neural Network
 
-Artificial Neural Networks (ANN) rely on Threshold Logic Units (TLU) or other kinds of artificial neurons to carry out classification. TLU is an artificial neuron that based on a set of features inputs computes a weighted sum which is compared to a threshold. The output depends on whether the weighted sum is lower or higher than the threshold and tells the class of a particular new instance Geron (2019). As it can be seen, ANN shares some similarities with SVM but the latter uses only critical features to establish the threshold, the so called support vectors, while the former uses all the features.
+Artificial Neural Networks (ANN) rely on Threshold Logic Units (TLU) or other kinds of artificial neurons to carry out classification. TLU is an artificial neuron that based on a set of features inputs computes a weighted sum which is compared to a threshold. The output depends on whether the weighted sum is lower or higher than the threshold and tells the class of a particular new instance @Geron2019. As it can be seen, ANN shares some similarities with SVM but the latter uses only critical features to establish the threshold, the so called support vectors, while the former uses all the features.
 
 ### Baseline Model 
 
-Traditionally, the main literature on credit score prediction employs logistic regression (LR) as a baseline for comparison. Aniceto (2020) study the performance of several methods to predict loan default with a data set provided by a Brazilian bank. They use logistic regression as a baseline and conclude that ensemble methods perform better. In this research, however, the recommendation of Lessman et al. (2015) will be followed. The authors suggest that random forest (RF) should be used as the benchmark when exploring the performance of new models for default prediction. They argue that RF has proved to be superior to LR and therefore outperforming LR models is no longer a major signal of methodological advancement.
+Traditionally, the main literature on credit score prediction employs logistic regression (LR) as a baseline for comparison @Aniceto2020 study the performance of several methods to predict loan default with a data set provided by a Brazilian bank. They use logistic regression as a baseline and conclude that ensemble methods perform better. In this research, however, the recommendation of @Lessman-2015 will be followed. The authors suggest that random forest (RF) should be used as the benchmark when exploring the performance of new models for default prediction. They argue that RF has proved to be superior to LR and therefore outperforming LR models is no longer a major signal of methodological advancement.
 
 ### Ensemble Model using Weighted Average (AvgW)
 
-After training and adjusting the individual models aforementioned,  our proposal was to build a classifier whose output is the weighted average of the individual methods. Bishop (2016  highlights that very often a combination of multiple models perform better than a single isolated one. In order to implement our ensemble method, we followed the approach employed by Stelzer (2019). The author uses a weighted average to estimate default probability. Each model is weighted according to its accuracy so that better performing methods have a higher influence over the final prediction.  This method is also found to be one of the top performers among 41 other approaches to predict credit scoring Lessman et al. (2015). 
+After training and adjusting the individual models aforementioned,  our proposal was to build a classifier whose output is the weighted average of the individual methods. @Bishop2006 highlights that very often a combination of multiple models perform better than a single isolated one. In order to implement our ensemble method, we followed the approach employed by @Stelzer2019. The author uses a weighted average to estimate default probability. Each model is weighted according to its accuracy so that better performing methods have a higher influence over the final prediction.  This method is also found to be one of the top performers among 41 other approaches to predict credit scoring @Lessman-2015. 
 
 The final predicted class was given by the following procedure. First, the weighted average probability is calculated for each class according to the expression below:
 
@@ -154,10 +154,8 @@ table2 %>% kbl(caption = "Fine-Tuning Results") %>%  kable_styling()
 
 The improvements achieved were remarkable. Although, we probably could get even more improvements if we had used more models in the AvgW routine.
 
-The final importance of that feature is estimated by calculating how much the score of the model decreases when this feature is substituted by noise.Total debt is the most important predictor in our ensemble model. It contains information on the total value of the debt of a certain student. It is related to which course the student chose, since some courses, like Medicine, are more expensive. It is also related to other features that also appear among the most important, like semesters funded, loan value, loan limit and loan value per semester. Our model is, therefore, strongly driven by the amount of money hired by the student.
+The final importance of that feature, shown in the next figure, is estimated by calculating how much the score of the model decreases when this feature is substituted by noise.Total debt is the most important predictor in our ensemble model. It contains information on the total value of the debt of a certain student. It is related to which course the student chose, since some courses, like Medicine, are more expensive. It is also related to other features that also appear among the most important, like semesters funded, loan value, loan limit and loan value per semester. Our model is, therefore, strongly driven by the amount of money hired by the student.
 
-
-The next figure shows the most important features of our model. The most important features for the predictions are listed in the figure XXX . The 10 most important features are mainly related to the loan conditions.
 
 <center>
 ```{r fig2, eval = TRUE, echo = FALSE, out.width = '100%', fig.cap = "Feature Importance"}
@@ -168,7 +166,7 @@ knitr::include_graphics("./figures/FeatureImportance.png")
 
 ### Ethical Implications
 
-The use of Machine Learning to predict loan default is one among the many analyses that are now largely employing ML algorithms like credit scoring and crime prediction. Even though,  our analysis is mainly focused on a proposal for a better public policy, we cannot avoid the ethical discussion about the results, considering that according to  \cite{Kusner2017} “decisions in these areas may have ethical or legal implications, so it is necessary for the modeler to think beyond the objective of maximizing prediction accuracy and consider the societal impact of their work."
+The use of Machine Learning to predict loan default is one among the many analyses that are now largely employing ML algorithms like credit scoring and crime prediction. Even though,  our analysis is mainly focused on a proposal for a better public policy, we cannot avoid the ethical discussion about the results, considering that according to [@Kusner2017] “decisions in these areas may have ethical or legal implications, so it is necessary for the modeler to think beyond the objective of maximizing prediction accuracy and consider the societal impact of their work."
 
 That being said, we should highlight that the most important features of our ensemble model are related to the value of the course chosen by the student or to his capacity to pay, as poorer students, for example, would finance a higher proportion of their courses. Because of that, applying our model to define who should get a loan without further thought might exclude subgroups based on loan value. 
 
