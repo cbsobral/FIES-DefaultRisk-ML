@@ -31,63 +31,39 @@ library(reticulate) # For rendering Python code
 ## Abstract 
 
 
-[@kim_convolutional_2014]
-This paper presents results for different machine learning methods to predict student loan default in FIES, the most prominent student loan program in Brazil. We employed  five methods: logistic regression, decision trees, support vector machines, random forest, and neural networks. The neural networks showed the best results, followed by random forest, logistic regression, linear SVM, and decision trees. 
-
-The best models were then combined in an ensemble model using Weighted Average (AvgW). Compared to the baseline, the results were improved by 6.6%. The values of the area under the curve obtained exceeded those available in the related literature. 
-
-Based on a feature importance analysis, loan-value related features are the most important predictors of loan defaults.
+This work presents the results for different machine learning methods for predicting student loan default in FIES, the best-known student loan program in Brazil. We used five methods: logistic regression, decision trees, support vector machines, random forest, and neural networks. The neural network classifier outperformed the other methods. After fine-tuning the three best models, they were combined into an ensemble using the Weighted Average (AvgW) method. Compared to the baseline, the predictions were improved by 6.6%. The values of the area under the curve obtained exceeded those found in the related literature. Loan value-related features were the most important predictors of loan defaults, based on a feature importance analysis.
 
 
 ## Introduction
 
-Machine learning algorithms have been used extensively to predict credit risk in the context of consumer loans (Kruppa et al., 2013; Yeh and hui Lien, 2009). Educational loans are similar to consumer loans in many respects but have some unique features, such as increased uncertainty
-about the borrower’s characteristics at the time of repayment. In addition, student loans are tied to more extended repayment periods and little or no collateral, leading to more difficult lender risk assessment.
+Machine learning algorithms have been widely used to predict credit risk in the context of consumer loans [@Kruppa2013; @Yeh2009]. Education loans are similar to consumer loans in many ways but have some unique characteristics, such as increased uncertainty about the borrower's characteristics at the time of repayment. In addition, student loans are tied to longer repayment periods and little or no collateral, leading to a more complex risk assessment for lenders.
 
-In Brazil, the most prominent educational loan program is FIES (Financiamento Estudantil). Its goal is to provide loans to students with better interest rates compared to the market; the program is partially public-funded. Between 2009 and 2015, more than 2 million students received a loan
-through the FIES program. We used a database that contains information on more than 600,000 students who received the loan from the FIES program. The database refers to the position in 2021 of loans contracted in 2015. Each row of the dataset corresponds to a contract and contains information on loan compliance, the number of days of noncompliance, and a loan default dummy. Also, for each contract, there is information about each student, such as family income, whether or not she has a job, gender, race, what course she is taking, marital status, whether or not the student attended a public high school, and so on. Each of these variables is a possible predictor of loan default. The data sources are the Ministry of Education and the financial institutions that administer the loan; the Brazilian National Treasury compiled the final database.
+In Brazil, the best-known education loan program is FIES (Financiamento Estudantil). Its goal is to provide loans to students at more favorable interest rates than the market; the program is partially publicly funded. Between 2009 and 2015, more than 2 million students received loans through the FIES program. We used a database that contains information on more than 600,000 students who received a loan from the FIES program. The database refers to the position in 2021 of loans contracted in 2015. Each row in the dataset corresponds to a contract and contains information on compliance with loan terms, the number of days of noncompliance, and a dummy for loan default. Also, for each contract, there is information about each student, such as family income, whether or not she has a job, gender, race, what course she is taking, marital status, whether or not the student attended a public high school, and so on. Each of these variables is a possible predictor of loan default. The data sources are the Ministry of Education and the financial institutions that administer the loan; the Brazilian National Treasury compiled the final database.
 
+This work adds to the existing literature by analyzing new data on the FIES program released by the National Treasury Secretariat to investigate the classification accuracy of machine learning algorithms for screening education borrowers. We also examine the key drivers of repayment to provide essential insights into this particular setting and provide evidence-based policy recommendations to promote the sustainability of this fund. 
 
-This paper adds to the existing literature by analyzing novel data on the FIES program released by the National Treasury Secretariat to investigate the classification accuracy of machine learning algorithms for screening education borrowers. In addition, we explore the key drivers of repayment to provide key insights into this particular setting and provide evidence-based policy recommendations to promote the sustainability of this loan fund. 
+Finally, we provide insights into the ethical implications of our findings for the student loan granting process in Brazil. As expected, our results show that an ensemble model is better able to provide accurate classification information about student credit risk for such a dataset, as our ensemble model outperforms all non-ensemble models. Loan value-related features are the most important predictors of loan default in our model. This could be a source of bias if we consider that subgroups that borrow specific loan values could be included or excluded when applying our model.
 
-
-Finally, we provide insights into the ethical implications of our findings
-for the student loan granting process in Brazil. As expected, our results show that an ensemble model is better able to provide accurate classification information about student credit risk for such a dataset, as our ensemble model outperforms all non-ensemble models. Loan value related features are the most important predictors of loan default in our model. This could be a source of bias if we consider that subgroups borrowing certain loan values could be included or excluded when applying our model.
 
 
 
 ## Related Work 
 
-This work relates to studies that apply machine learning algorithms to credit scoring applications. Han (2019) employs many different algorithms to predict loan repayment for a lending club, focusing mainly on the insights gained from the predictive features. The algorithm with the best performance was logistic regression, followed by random forest, k-nearest neighbors, and support vector machines.
-
-Liang et al. (2019) use five different algorithms to accomplish the same task.The authors find that logistic regression, multilayer perceptron (neural networks), and random forest are the best algorithms. In addition, number of days employed and age are the strongest predictors of loan repayment in their data.
-
-Lessmann et al. (2015) conduct a benchmark study for 41 classification methods over eight credit scoring datasets. The results show that many classifiers predict credit default outcomes better than the industry standard – logistic regression. Heterogeneous ensemble classifiers, such as direct selective ensembles, perform remarkably well in their study.
-
-Stelzer (2019) conducts a similar benchmark study using 23 machine learning methods. She applies five data sampling strategies to combat existing class imbalances in the data. The results show that simple up-sampling or down-sampling yields the best predictive performance in the face of unequal class distributions. 
-
-In the Brazilian context, Aniceto et al. (2020) study the performance of different methods for predicting loan defaults with a dataset of loans provided by a Brazilian bank. They use logistic regression as a baseline and conclude that ensemble methods perform better.
-
-In the context of student loans, in a working paper, Jayadev et al. (2019) apply machine learning models to predict defaults on education loans, taking into account borrower-specific characteristics such as income, university, geographic region, as well as systematic factors such as growth rate, inflation, and unemployment rate. They find that ”ensemble models tend to perform better than simple artificial techniques and statistical models and that the performance can be improved significantly by model stacking” (p. 27).
+Our work relates to studies that apply machine learning algorithms to credit scoring applications. @Han_2019 employs many different algorithms to predict loan repayment for a lending club, focusing mainly on the insights gained from the predictive features. The algorithm with the best performance was logistic regression, followed by random forest, k-nearest neighbors, and support vector machines.
 
 
-**See below for an example of how to cite related work in Markdown.**
+@Lessman-2015 conduct a benchmark study for 41 classification methods over eight credit scoring datasets. The results show that many classifiers predict credit default outcomes better than the industry standard – logistic regression. Heterogeneous ensemble classifiers, such as direct selective ensembles, perform remarkably well in their study. @Stelzer2019 conducts a similar benchmark study using 23 machine learning methods. She applies five data sampling strategies to combat existing class imbalances in the data. The results show that simple up-sampling or down-sampling yields the best predictive performance in the face of unequal class distributions. 
 
-Bidirectional Encoder Representations from Transformers (BERT) have proven successful in prior attempts to classify phrases and short texts [@devlin2018bert].
+In the Brazilian context, @Aniceto2020 study the performance of different methods for predicting loan defaults with a dataset of loans provided by a Brazilian bank. They use logistic regression as a baseline and conclude that ensemble methods perform better.
 
-**Footnotes and Sidenotes**
+In the context of student loans, in a working paper, @Jayadev2019 apply machine learning models to predict defaults on education loans, taking into account borrower-specific characteristics such as income, university, geographic region, as well as systematic factors such as growth rate, inflation, and unemployment rate. They find that ”ensemble models tend to perform better than simple artificial techniques and statistical models and that the performance can be improved significantly by model stacking” (p. 27).
 
-You can use footnotes ^[This is a footnote. You can view this by hovering over the footnote in text.] or sidenotes to elaborate on a concept throughout the paper. 
-
-<aside>
-This is a side note. 
-</aside>
 
 ## Proposed Method 
 
 ### Logistic Regression
 
-Logistic Regression (LR) is a binary classifier that estimates the probability of a certain instance belonging to one of two classes. According to o Yeh and hui Lien (2009), a logistic regression model specifies that the probability of an event is a linear function of the observed values of the available predictors. 
+Logistic Regression (LR) is a binary classifier that estimates the probability of a certain instance belonging to one of two classes. According to o Yeh and Hui Lien (2009), a logistic regression model specifies that the probability of an event is a linear function of the observed values of the available predictors. 
 
 ### Decision Trees
 
@@ -136,80 +112,81 @@ For each instance, the model computes the weighted average probability p for cla
 
 * Pre-processing: The first step in pre-processing was to remove information from borrowers that were not in the repayment stage, which resulted in the exclusion of almost 200,000 observations that were not suitable for prediction purposes.Next, we removed variables that were not as relevant to the results or had a high proportion of missing values. Additionally, in order to reduce complexity and the number of levels, some categorical variables were re-coded. We also analyzed possible collinearity between variables and eliminated redundant variables to improve the efficiency of the learning process. In the following step the data was split in train and test set using the proportion of 80% for training and 20% for the testing set.
 
-* Pipelines: Pipelines are sequences of procedures carried out to prepare the training and testing set according to requirements of the functions and classes used to trin the models. For example, we used pipelines for filling missing values and for variable scaling.
+* Pipelines: Pipelines are sequences of procedures carried out to prepare the training and testing set according to requirements of the functions and classes used to train the models. For example, we used pipelines for filling missing values and for variable scaling.
 
 * Initial Training: After preparing the data, we used Scikit-learn to train our initial models. Results are presented in the table bellow. Artificial Neural Networks was our best performer.
-<center>
-![Table 1 - Initial Models](figures/Table1.png){width=45%}
-</center>
+
+
+```{r,echo = FALSE}
+library(dplyr)
+library(kableExtra)
+
+
+table1 <- data.frame(Method=c('Neural Network', 'Random Forest','Logistic Regression', 'Decision Trees'), AUC =c(0.8187, 0.7825, 0.7232, 0.6451))
+
+table1 %>% kbl(caption = "Initial Models") %>%  kable_styling()
+```
+
+
 
 * Fine tuning: Employing the Scikit-learn Random Grid Search, we investigated the best hyperparameters for our three highest-scoring models (Neural Network, Random Forest, and Logistic Regression). After optimization, the neural network classifier trained on the down-sampled data set had the best performance, achieving an AUC of over 83%. 
 
 * Ensemble model: Finally, we implemented a composite predictor, made out of the average of different types of base models. This approach is likely to improve performance because the distinct models approach data differently and therefore complement each other [@Stelzer2019]. In order to obtain an averaged model with different types of base predictors, we selected the three best-performing individual models: ANN, RF and LR. We used the Scikit-Learn VotingClassifier class to implement the ensemble method. This class offers the possibility of computing the predicted class using “soft voting” with the possibility to assign one weight to each model. As explained in the methodology section, our aim was to employ weights proportional to the AUC of each model. In practice, however, we realized that weights proportional to the AUC did not deliver the best AUC. Figure 1 shows that the performance of the model increased as we increased the weight of our best predictor. The performance reached a peak when the ANN model had a weight of around 0.8 and the remaining models shared 0.2 of the weight. When the ANN weight was further increased, the performance started to decrease again, indicating that we had found the best weight distribution for our ensemble model.
 
+<center>
 
 ```{r fig1, eval = TRUE, echo = FALSE, out.width = '80%', fig.cap = "Optimal Weights"}
 knitr::include_graphics("./figures/OptimalWeights.png")
 ```
 
+</center>
+
 
 ## Analysis 
 
-
 The results after the optimization routines can be summarized in the following table along with two important references. The Logistic Regression results and the Random Forest results. The first one, largely used in the literature as baseline for this type of classification and the second one, used in this work as a good reference, due to it's expected good results.
 
-```{r,echo = FALSE}
-table_analysis <- data.frame(Methods=c('Random Forest','Logistic Regression'), AUC_Baseline =c(0.7836,0.7232),AUC_AvgW = c(0.8354,0.8354),Improvement = c("6.6%","15.5%"))
-```
-
 ```{r, echo = FALSE}
-library(dplyr)
-library(kableExtra)
+table2 <- data.frame(Methods=c('Random Forest','Logistic Regression'), AUC_Baseline =c(0.7836,0.7232), AUC_AvgW = c(0.8354,0.8354),Improvement = c("6.6%","15.5%"))
 
-table_analysis %>%kbl() %>%  kable_styling()
-
+table2 %>% kbl(caption = "Fine-Tuning Results") %>%  kable_styling()
 ```
+
 The improvements achieved were remarkable. Although, we probably could get even more improvements if we had used more models in the AvgW routine.
 
 The final importance of that feature is estimated by calculating how much the score of the model decreases when this feature is substituted by noise.Total debt is the most important predictor in our ensemble model. It contains information on the total value of the debt of a certain student. It is related to which course the student chose, since some courses, like Medicine, are more expensive. It is also related to other features that also appear among the most important, like semesters funded, loan value, loan limit and loan value per semester. Our model is, therefore, strongly driven by the amount of money hired by the student.
 
 
-The next figure shows the most important features of our model. The most important features for the prections are listed in the figure XXX . The 10 most important features are mainly related to the loan conditions.
+The next figure shows the most important features of our model. The most important features for the predictions are listed in the figure XXX . The 10 most important features are mainly related to the loan conditions.
 
+<center>
 ```{r fig2, eval = TRUE, echo = FALSE, out.width = '100%', fig.cap = "Feature Importance"}
 knitr::include_graphics("./figures/FeatureImportance.png")
 ```
+</center>
+
 
 ### Ethical Implications
 
-The use of Machine Learning to predict loan default is one among the many analyses that are now largely employing ML algorithms like credit scoring and crime prediction. Even though,  our analysis is mainly focused on a proposal for a better public policy, we cannot avoid the ethical discussion about the results, considering that according to  \cite{Kusner2017} “decisions in these areas may have ethical or legal implications, so it is necessary for the modeler to think beyond the objective of maximizing prediction accuracy and consider the societal impact of their worl."
+The use of Machine Learning to predict loan default is one among the many analyses that are now largely employing ML algorithms like credit scoring and crime prediction. Even though,  our analysis is mainly focused on a proposal for a better public policy, we cannot avoid the ethical discussion about the results, considering that according to  \cite{Kusner2017} “decisions in these areas may have ethical or legal implications, so it is necessary for the modeler to think beyond the objective of maximizing prediction accuracy and consider the societal impact of their work."
 
 That being said, we should highlight that the most important features of our ensemble model are related to the value of the course chosen by the student or to his capacity to pay, as poorer students, for example, would finance a higher proportion of their courses. Because of that, applying our model to define who should get a loan without further thought might exclude subgroups based on loan value. 
 
-###  Robnustness Withouth Fixed Characteristics
+###  Robnustness Without Fixed Characteristics
 
-In terms of fixed characteristics in the model, that can lead to misinterpretation of the results, due to a possible misinterpretation of the results,  we analyse “gender” and “ethnicity”. For our proposal it is important to keep these features in the model, but we also tested the model  without these characteristics. The  results are also robust without these features as shown in the following table, and still outperform  our baseline model as well as the findings from previous literature.
-
-```{r}
-remove_characteristics <- data.frame(Methods=c('Without Gender','Without Ethnicity','Without Gender and Ethnicity'), AUC =c(0.753,0.751,0.752), Brier_Score = c(0.201,0.202,0.202))
-```
-
+In terms of fixed characteristics in the model, that can lead to misinterpretation of the results, due to a possible misinterpretation of the results,  we analyze “gender” and “ethnicity”. For our proposal it is important to keep these features in the model, but we also tested the model  without these characteristics. The  results are also robust without these features as shown in the following table, and still outperform  our baseline model as well as the findings from previous literature.
 
 ```{r}
+table3 <- data.frame(Methods=c('Without Gender','Without Ethnicity','Without Gender and Ethnicity'), AUC =c(0.753,0.751,0.752), Brier_Score = c(0.201,0.202,0.202))
 
-remove_characteristics %>%kbl() %>%  kable_styling()
-
+table3 %>% kbl(caption = 'Robustness - Fixed Characteristics') %>%  kable_styling()
 ```
 
 
 ## Conclusion
 
-In this study, we apply different machine learning classifiers and sampling strategies to predict student loan default in FIES, the main student loan program in Brazil. Our findings indicate that using an ensemble method is superior to most individual models. The overall results showed that Artificial Neural Networks performed best in every context. Moreover, up-sampling and down-sampling strategies were not able to remarkably improve the performance of the models in terms of AUC score. Finally, concerning feature importance, we found that loan-related characteristics - rather than individual characteristics - are the most important predictors of default.
+In this study, we apply different machine learning classifiers and sampling strategies to predict student loan default in FIES. Our findings indicate that using an ensemble method is superior to most individual models. The overall results showed that Artificial Neural Networks performed best in every context. Moreover, up-sampling and down-sampling strategies were not able to remarkably improve the performance of the models in terms of AUC score. Finally, concerning feature importance, we found that loan-related characteristics - rather than individual characteristics - are the most important predictors of default.
 
 The results obtained in this work were limited due to the high computational time required to train the selected models. Moreover, the results could be further improved by a deeper and more comprehensive analysis of the predictor variables used for each estimation.
 
 In summary, this research clearly demonstrates that machine learning algorithms can play an important role in improving the loan granting process in an educational setting, while having the sustainability of the fund in mind. However, our analysis also raises the question of whether historical biases are perpetuated with the unrestricted use of prediction algorithms. For this reason, it is recommended that practitioners refrain from adopting machine learning techniques without regard to existing biases and policy goals.
-
-## Acknowledgments 
-
-List acknowledgments, if any. For example, if someone provided you a dataset, or you used someone else's resources, this is a good place to acknowledge the help or support you received.
