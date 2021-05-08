@@ -125,34 +125,33 @@ For each instance, the model computes the weighted average probability p for cla
 
 ## Experiments 
 
-**Data**: Describe the dataset(s) you are using (provide references). If it's not already clear, make sure the associated task is clearly described.
+**Data**: The data set used for this project was produced by the Brazilian Ministry of Education. Each observation in the data corresponds to individual student loan operations and includes many features that can be used to predict debt loans, such as family income, the field of studies, and occupation, among others. The borrowers’ privacy is guaranteed by removing all the information about the loan taker’s identity from the data set before it was made available for this study.
  
-**Software**: Briefly list (and cite) software you used.
+**Software**: In order to program and organize our code, we used Jupyter notebooks, a document format for coding, displaying results and text in a form that is both readable and executable [@soton403913]. To run Jupyter notebooks we used two environments: JupyterLab and Google Colaboratory (Colab). Finally, we used Scikit-Learn to implement our models. It provides numerous algorithms to perform machine learning tasks [@scikit-learn].
 
-**Hardware**: If relevant, list hardware resources you used.
 
-**Evaluation method**: Describe the evaluation metric(s) you used, plus any other details necessary to understand your evaluation.
+**Evaluation method**: Our main performance indicator is the Receiver Operating Characteristics (ROC curve), also known as area under the curve (AUC). The AUC evaluates the discriminatory ability of a classifier. It estimates the probability that a randomly chosen positive instance of class 1 is correctly ranked higher than a randomly selected instance of negative class 0 [@article]. The AUC ranges from 0.5 to 1, where an AUC of 0.5 indicates that a classifier has no predictive value and a higher score implies better predictive performance.
 
-**Experimental details**: How you ran your experiments (e.g. model configurations, learning rate, training time, etc.) 
+**Experimental details**: Our experiments occurred in five main parts: data pre-processing, pipelines, initial training, fine tuning and final model training (ensemble model). 
 
-**Results**: Report the quantitative results that you have found so far. Use a table or plot to compare multiple results and compare against baselines. 
+* Pre-processing: The first step in pre-processing was to remove information from borrowers that were not in the repayment stage, which resulted in the exclusion of almost 200,000 observations that were not suitable for prediction purposes.Next, we removed variables that were not as relevant to the results or had a high proportion of missing values. Additionally, in order to reduce complexity and the number of levels, some categorical variables were re-coded. We also analyzed possible collinearity between variables and eliminated redundant variables to improve the efficiency of the learning process. In the following step the data was split in train and test set using the proportion of 80% for training and 20% for the testing set.
 
-**Comment on quantitative results**: Are they what you expected? Better than you expected? Worse than you expected? Why do you think that is? What does this tell you about what you should do next? Including training curves might be useful to discuss whether things are training effectively.
+* Pipelines: Pipelines are sequences of procedures carried out to prepare the training and testing set according to requirements of the functions and classes used to trin the models. For example, we used pipelines for filling missing values and for variable scaling.
 
-***Note***: **Feel free to use some of the code from your project to explain your experiments. See example code block below.**
+* Initial Training: After preparing the data, we used Scikit-learn to train our initial models. Results are presented in the table bellow. Artificial Neural Networks was our best performer.
+<center>
+![Table 1 - Initial Models](figures/Table1.png){width=45%}
+</center>
 
-```{python bertcnn model parameters, echo = TRUE, eval = FALSE}
-#OUTPUT_DIM = len(LABEL.vocab#)
-#DROPOUT = 0.5
-#N_FILTERS = 100
-#FILTER_SIZES = [2,3]
+* Fine tuning: Employing the Scikit-learn Random Grid Search, we investigated the best hyperparameters for our three highest-scoring models (Neural Network, Random Forest, and Logistic Regression). After optimization, the neural network classifier trained on the down-sampled data set had the best performance, achieving an AUC of over 83%. 
 
-#model = BERTCNN(bert,
-                OUTPUT_DIM,
-                DROPOUT,
-                N_FILTERS,
-                FILTER_SIZES)
+* Ensemble model: Finally, we implemented a composite predictor, made out of the average of different types of base models. This approach is likely to improve performance because the distinct models approach data differently and therefore complement each other [@Stelzer2019]. In order to obtain an averaged model with different types of base predictors, we selected the three best-performing individual models: ANN, RF and LR. We used the Scikit-Learn VotingClassifier class to implement the ensemble method. This class offers the possibility of computing the predicted class using “soft voting” with the possibility to assign one weight to each model. As explained in the methodology section, our aim was to employ weights proportional to the AUC of each model. In practice, however, we realized that weights proportional to the AUC did not deliver the best AUC. Figure 1 shows that the performance of the model increased as we increased the weight of our best predictor. The performance reached a peak when the ANN model had a weight of around 0.8 and the remaining models shared 0.2 of the weight. When the ANN weight was further increased, the performance started to decrease again, indicating that we had found the best weight distribution for our ensemble model.
+
+
+```{r fig1, eval = TRUE, echo = FALSE, out.width = '80%', fig.cap = "Optimal Weights"}
+knitr::include_graphics("./figures/OptimalWeights.png")
 ```
+
 
 ## Analysis 
 
@@ -203,9 +202,13 @@ remove_characteristics %>%kbl() %>%  kable_styling()
 ```
 
 
-## Conclusion(s)
+## Conclusion
 
-Summarize the main findings of your project, and what you learned. Highlight your achievements, and note the primary limitations of your work. If you like, you can describe avenues for future work.
+In this study, we apply different machine learning classifiers and sampling strategies to predict student loan default in FIES, the main student loan program in Brazil. Our findings indicate that using an ensemble method is superior to most individual models. The overall results showed that Artificial Neural Networks performed best in every context. Moreover, up-sampling and down-sampling strategies were not able to remarkably improve the performance of the models in terms of AUC score. Finally, concerning feature importance, we found that loan-related characteristics - rather than individual characteristics - are the most important predictors of default.
+
+The results obtained in this work were limited due to the high computational time required to train the selected models. Moreover, the results could be further improved by a deeper and more comprehensive analysis of the predictor variables used for each estimation.
+
+In summary, this research clearly demonstrates that machine learning algorithms can play an important role in improving the loan granting process in an educational setting, while having the sustainability of the fund in mind. However, our analysis also raises the question of whether historical biases are perpetuated with the unrestricted use of prediction algorithms. For this reason, it is recommended that practitioners refrain from adopting machine learning techniques without regard to existing biases and policy goals.
 
 ## Acknowledgments 
 
