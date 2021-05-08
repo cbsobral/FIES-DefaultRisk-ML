@@ -122,7 +122,7 @@ library(dplyr)
 library(kableExtra)
 
 
-table1 <- data.frame(Method=c('Neural Network', 'Random Forest','Logistic Regression', 'Decision Trees'), AUC =c(0.8187, 0.7825, 0.7232, 0.6451))
+table1 <- data.frame(Method = c('Neural Network', 'Random Forest','Logistic Regression', 'Decision Trees'), AUC = c(0.8187, 0.7825, 0.7232, 0.6451))
 
 table1 %>% kbl(caption = "Initial Models") %>%  kable_styling()
 ```
@@ -144,10 +144,10 @@ knitr::include_graphics("./figures/OptimalWeights.png")
 
 ## Analysis 
 
-The results after the optimization routines can be summarized in the following table along with two important references. The Logistic Regression results and the Random Forest results. The first one, largely used in the literature as baseline for this type of classification and the second one, used in this work as a good reference, due to it's expected good results.
+The results after the optimization routines can be summarized in the following table along with two important references. The Logistic Regression results and the Random Forest results. The first one, largely used in the literature as baseline for this type of classification and the second one, used in this work as a reference, due to it's expected good results.
 
 ```{r, echo = FALSE}
-table2 <- data.frame(Methods=c('Random Forest','Logistic Regression'), AUC_Baseline =c(0.7836,0.7232), AUC_AvgW = c(0.8354,0.8354),Improvement = c("6.6%","15.5%"))
+table2 <- data.frame(Methods = c('Random Forest','Logistic Regression'), AUC_Baseline = c(0.7836,0.7232), AUC_AvgW = c(0.8354,0.8354), Improvement = c("6.6%","15.5%"))
 
 table2 %>% kbl(caption = "Fine-Tuning Results") %>%  kable_styling()
 ```
@@ -177,7 +177,7 @@ That being said, we should highlight that the most important features of our ens
 In terms of fixed characteristics in the model, that can lead to misinterpretation of the results, due to a possible misinterpretation of the results,  we analyze “gender” and “ethnicity”. For our proposal it is important to keep these features in the model, but we also tested the model  without these characteristics. The  results are also robust without these features as shown in the following table, and still outperform  our baseline model as well as the findings from previous literature.
 
 ```{r}
-table3 <- data.frame(Methods=c('Without Gender','Without Ethnicity','Without Gender and Ethnicity'), AUC =c(0.753,0.751,0.752), Brier_Score = c(0.201,0.202,0.202))
+table3 <- data.frame(Methods = c('Without Gender','Without Ethnicity','Without Gender and Ethnicity'), AUC = c(0.753,0.751,0.752), Brier_Score = c(0.201,0.202,0.202))
 
 table3 %>% kbl(caption = 'Robustness - Fixed Characteristics') %>%  kable_styling()
 ```
